@@ -93,12 +93,14 @@ class AllureImpl(object):
         # Delete all files in report directory
         if not os.path.exists(self.logdir):
             os.makedirs(self.logdir)
+        """
+        # TODO: We want to join reports on reruns.
         else:
             for f in os.listdir(self.logdir):
                 f = os.path.join(self.logdir, f)
                 if os.path.isfile(f):
                     os.unlink(f)
-
+        """
         # That's the state stack. It can contain TestCases or TestSteps.
         # Attaches and steps go to the object at top of the stack.
         self.stack = []
