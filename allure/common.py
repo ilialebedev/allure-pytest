@@ -20,6 +20,7 @@ import py
 from allure.constants import AttachmentType, Status
 from allure.structure import Attach, TestStep, TestCase, TestSuite, Failure, Environment, EnvParameter
 from allure.utils import now
+import logging
 
 
 class StepContext:
@@ -90,9 +91,12 @@ class AllureImpl(object):
     def __init__(self, logdir):
         self.logdir = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars(logdir))))
 
-        # Delete all files in report directory
+        # Make report directory
         if not os.path.exists(self.logdir):
-            os.makedirs(self.logdir)
+            try:
+                os.makedirs(self.logdir)
+            except FileExistsError as error:
+                logging.error('Failed to make logdir: {}'.format(error))
         """
         # TODO: We want to join reports on reruns.
         else:
